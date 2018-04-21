@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Days</title>
+    </head>
+    <body>
+        {% for activity in activities %}
+            <div>
+                <h1><a href="">{{ activity.title }}</a></h1>
+                <p>published: {{ activity.dateCreated }}</p>
+            </div>
+        {% endfor %}
+    </body>
+</html>
