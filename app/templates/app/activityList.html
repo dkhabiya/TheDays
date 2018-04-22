@@ -3,7 +3,8 @@
 {% block content %}
     {% for activity in activities %}
         <div>
-            <h1><a href="">{{ activity.title }}</a></h1>
+            <input type="checkbox" id="checkBox" value="{{ activity.done }}">
+            <div class="strikethrough">{{ activity.title }}</div>
             <p>published: {{ activity.dateCreated }}</p>
         </div>
     {% endfor %}

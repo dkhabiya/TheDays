@@ -1,14 +1,36 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 from .forms import ActivityForm
 from .models import Activity
 
 # Create your views here.
+def landing(request):
+    return render(request, 'app/landing.html')
+
+def signUp(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('landing')
+    else:
+        form = UserCreationForm()
+    return render(request, 'app/signUp.html', {'form': form})
+
+@login_required    
 def activityList(request):
-    activities = Activity.objects.filter(dateCreated__lte=timezone.now()).order_by('dateCreated')
+    activities = Activity.objects.filter(user=request.user).order_by('dateCreated')
     return render(request, 'app/activityList.html', {'activities': activities})
 
+@login_required
 def activityNew(request):
     if request.method == "POST":
         form = ActivityForm(request.POST)
