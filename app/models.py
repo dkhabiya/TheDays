@@ -4,7 +4,7 @@ from django.utils import timezone
 # Create your models here.
 class Activity(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    title = models.TextField()
+    title = models.CharField(max_length=200)
     dateCreated = models.DateTimeField(default=timezone.now)
     done = models.BooleanField(default=False)
 
