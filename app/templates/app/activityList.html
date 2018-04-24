@@ -3,13 +3,13 @@
 {% block content %}
     <br/>
     <div class="formBox">        
-        <form method="POST" class="">{% csrf_token %}
+        <form method="POST">{% csrf_token %}
             {{ form }}
             <div class="activityList">
                 <div class="input-group mb-3">
                   <input type="text" class="form-control" name="title">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-info" type="submit">Add</button>
+                    <button class="btn btn-outline-info" type="submit" name="add">Add</button>
                   </div>
                 </div>
             </div>
@@ -24,7 +24,10 @@
             <div class="input-group mb-3">
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">
-                <button class="btn btn-outline-success" type="submit">Done</button>
+                <form method="POST">{% csrf_token %}
+                  {{ form }}
+                  <button class="btn btn-outline-success" type="submit" name="done">Done</button>
+                </form>
               </div>
               <div class="input-group-append">
                 <button class="btn btn-outline-danger" type="submit">Delete</button>
