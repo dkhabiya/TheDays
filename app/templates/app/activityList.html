@@ -1,6 +1,21 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
+    <br/>
+    <div class="formBox">        
+        <form method="POST" class="">{% csrf_token %}
+            {{ form }}
+            <div class="activityList">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="title">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="submit">Add</button>
+                  </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
     <h2>To Do</h2>
     <hr/>
     {% for activity in activities %}
@@ -9,15 +24,16 @@
             <div class="input-group mb-3">
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">
-                <button class="btn btn-outline-info" type="button">Done</button>
+                <button class="btn btn-outline-success" type="submit">Done</button>
               </div>
               <div class="input-group-append">
-                <button class="btn btn-outline-danger" type="button">Delete</button>
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
               </div>
             </div>
             {% endif %}
         </div>
     {% endfor %}
+    
     <h2>Done</h2>
     <hr/>
     {% for activity in activities %}
@@ -26,14 +42,13 @@
             <div class="input-group mb-3">
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">
-                <button class="btn btn-outline-info" type="button">Undo</button>
+                <button class="btn btn-outline-primary" type="submit">Undo</button>
               </div>
               <div class="input-group-append">
-                <button class="btn btn-outline-danger" type="button">Delete</button>
+                <button class="btn btn-outline-danger" type="submit">Delete</button>
               </div>
             </div>
             {% endif %}
         </div>
     {% endfor %}
-    <a href="{% url 'activityNew' %}" class="top-menu">New</a>
 {% endblock %}

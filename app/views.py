@@ -29,19 +29,34 @@ def signUp(request):
 # Get activity list.
 @login_required    
 def activityList(request):
+    
     activities = Activity.objects.filter(user=request.user).order_by('dateCreated')
-    return render(request, 'app/activityList.html', {'activities': activities})
-
-@login_required
-def activityNew(request):
+    
     if request.method == "POST":
+        print("Here")
         form = ActivityForm(request.POST)
+        print(form)
         if form.is_valid():
             activity = form.save(commit=False)
             activity.user = request.user
             activity.dateCreated = timezone.now()
             activity.save()
             return redirect('activityList')
-    else:
-        form = ActivityForm()
-    return render(request, 'app/activityNew.html', {'form': form})
+    
+    return render(request, 'app/activityList.html', {'activities': activities})
+
+# @login_required
+# def activityNew(request):
+#     if request.method == "POST":
+#         print("Here")
+#         form = ActivityForm(request.POST)
+#         print(form)
+#         if form.is_valid():
+#             activity = form.save(commit=False)
+#             activity.user = request.user
+#             activity.dateCreated = timezone.now()
+#             activity.save()
+#             return redirect('activityList')
+#     else:
+#         form = ActivityForm()
+#     return render(request, 'app/activityNew.html', {'form': form})
