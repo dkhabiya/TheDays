@@ -4,16 +4,17 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import ActivityForm
+from .forms import ActivityForm, SignUpForm
 from .models import Activity
 
-# Create your views here.
+# Landing.
 def landing(request):
     return render(request, 'app/landing.html')
 
+# Sign up.
 def signUp(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -22,9 +23,10 @@ def signUp(request):
             login(request, user)
             return redirect('landing')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'app/signUp.html', {'form': form})
 
+# Get activity list.
 @login_required    
 def activityList(request):
     activities = Activity.objects.filter(user=request.user).order_by('dateCreated')

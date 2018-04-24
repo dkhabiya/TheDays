@@ -1,10 +1,22 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
+  <form method="post" class="form-signin">
+    <h1>Sign Up</h1>
+    <hr/>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
+    <label for="id_first_name" class="sr-only">First Name</label>
+    <input id="id_first_name" type="text" class="form-control" name="first_name" placeholder="First Name" maxlength="30"/>
+    
+    <label for="id_last_name" class="sr-only">Last Name</label>
+    <input id="id_last_name" type="text" class="form-control" name="last_name" placeholder="Last Name" maxlength="30"/>
+    
+    <label for="id_username" class="sr-only">Username</label>
+    <input id="id_username" type="text" class="form-control" name="username"placeholder="Username" maxlength="30"/>
+    
+    <label for="id_password1" class="sr-only">Password</label>
+    <input type="password" class="form-control" name="password1" placeholder="Password" id="id_password1"/>
+    
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
   </form>
 {% endblock %}

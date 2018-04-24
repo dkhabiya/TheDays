@@ -1,11 +1,39 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
+    <h2>To Do</h2>
+    <hr/>
     {% for activity in activities %}
-        <div>
-            <input type="checkbox" id="checkBox" value="{{ activity.done }}">
-            <div class="strikethrough">{{ activity.title }}</div>
-            <p>published: {{ activity.dateCreated }}</p>
+        <div class="activityList">
+            {% if not activity.done %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" value="{{ activity.title }}" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button">Done</button>
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger" type="button">Delete</button>
+              </div>
+            </div>
+            {% endif %}
         </div>
     {% endfor %}
+    <h2>Done</h2>
+    <hr/>
+    {% for activity in activities %}
+        <div class="activityList">
+            {% if activity.done %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" value="{{ activity.title }}" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button">Undo</button>
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger" type="button">Delete</button>
+              </div>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <a href="{% url 'activityNew' %}" class="top-menu">New</a>
 {% endblock %}
