@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'login/$', auth_views.login, {'template_name': 'app/login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'next_page': 'landing'}, name='logout'),
     url(r'user$', views.activityList, name='activityList'),
-    # url(r'done/$', views.done, name='done'),
+    url(r'^update/(?P<pk>\d+)/$', views.update, name='update'),
+    url(r'^delete/(?P<pk>\d+)/$', views.delete, name='delete'),
 ]

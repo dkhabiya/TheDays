@@ -22,15 +22,15 @@
         <div class="activityList">
             {% if not activity.done %}
             <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">{{ forloop.counter }}</div>
+              </div>
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">
-                <form method="POST">{% csrf_token %}
-                  {{ form }}
-                  <button class="btn btn-outline-success" type="submit" name="done">Done</button>
-                </form>
+                <a class="btn btn-default btn btn-outline-success" href="{% url 'update' pk=activity.id %}">Done</a>
               </div>
               <div class="input-group-append">
-                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                <a class="btn btn-default btn btn-outline-danger" href="{% url 'delete' pk=activity.id %}">Delete</a>
               </div>
             </div>
             {% endif %}
@@ -43,12 +43,15 @@
         <div class="activityList">
             {% if activity.done %}
             <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">{{ forloop.counter }}</div>
+              </div>
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="submit">Undo</button>
+                <a class="btn btn-default btn btn-outline-primary" href="{% url 'update' pk=activity.id %}">Undo</a>
               </div>
               <div class="input-group-append">
-                <button class="btn btn-outline-danger" type="submit">Delete</button>
+                <a class="btn btn-default btn btn-outline-danger" href="{% url 'delete' pk=activity.id %}">Delete</a>
               </div>
             </div>
             {% endif %}

@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
+
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+
 from .forms import ActivityForm, SignUpForm
 from .models import Activity
 
@@ -26,7 +29,7 @@ def signUp(request):
         form = SignUpForm()
     return render(request, 'app/signUp.html', {'form': form})
 
-# Get activity list.
+# Get activity list based on user login.
 @login_required    
 def activityList(request):
     activities = Activity.objects.filter(user=request.user).order_by('dateCreated')
@@ -41,32 +44,28 @@ def activityList(request):
             activity.save()
             return redirect('activityList')
     
-    if request.method == "POST" and 'done' in request.POST:
-        print('Done')
-        form = ActivityForm(request.POST)
-        print(request.POST.get('id'))
-        # if form.is_valid():
-        #     activity = form.save(commit=False)
-        #     activity.user = request.user
-        #     activity.dateCreated = timezone.now()
-        #     activity.save()
-        return redirect('activityList')
+    return render(request, 'app/index.html', {'activities': activities})
+
+# Update status of activity.
+@login_required
+def update(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
     
-    return render(request, 'app/activityList.html', {'activities': activities})
-
-# @login_required
-# def activityNew(request):
-#     if request.method == "POST":
-#         print("Here")
-#         form = ActivityForm(request.POST)
-#         print(form)
-#         if form.is_valid():
-#             activity = form.save(commit=False)
-#             activity.user = request.user
-#             activity.dateCreated = timezone.now()
-#             activity.save()
-#             return redirect('activityList')
-#     else:
-#         form = ActivityForm()
-#     return render(request, 'app/activityNew.html', {'form': form})
-
+    if(activity.done) :
+        activity.done = False
+    else:
+        activity.done = True
+    activity.dateCreated = timezone.now()    
+    activity.save()
+    
+    return redirect('activityList')
+    
+# Delete activity.
+@login_required
+def delete(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    activity.delete()
+    
+    return redirect('activityList')
+      
+  
