@@ -6,12 +6,14 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import (login as auth_login, authenticate)
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 from .forms import ActivityForm, SignUpForm
 from .models import Activity
 
 import itertools
 import functools
+import re
 
 # Landing.
 def landing(request):
@@ -42,16 +44,20 @@ def doLogin(request):
     if request.method == 'POST':
         _username = request.POST['username']
         _password = request.POST['password1']
-        user = authenticate(username=_username, password=_password)
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return redirect('/user')
+        
+        if User.objects.filter(username=_username).exists():
+            user = authenticate(username=_username, password=_password)
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    return redirect('/user')
+                else:
+                    _message = '* Your account is not activated.'
             else:
-                _message = '* Your account is not activated.'
+                _message = '* Incorrect Password.'
         else:
             _message = '* User does not exist.'
-    
+            
     context = {'message': _message}
     return render(request, 'app/getLogin.html', context)
     
@@ -92,3 +98,18 @@ def delete(request, pk):
     activity.delete()
     
     return redirect('activityList')
+    
+def validate(value):
+    error=''
+    while True:
+        if len(value) < 5:
+            error="* Password too short."
+        elif re.search('[0-9]',value) is None:
+            error="Make sure your password has a number in it"
+            break
+        elif re.search('[A-Z]',value) is None: 
+            error="Make sure your password has a capital letter in it"
+            break
+        
+    return error
+               
