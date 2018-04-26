@@ -7,18 +7,29 @@
       <hr/>
       {% csrf_token %}
       <label for="id_first_name" class="sr-only">First Name</label>
-      <input id="id_first_name" type="text" class="form-control" name="first_name" placeholder="First Name" maxlength="30"/>
+      <input id="id_first_name" type="text" class="form-control" name="first_name" placeholder="First Name" maxlength="30" required/>
       
       <label for="id_last_name" class="sr-only">Last Name</label>
       <input id="id_last_name" type="text" class="form-control" name="last_name" placeholder="Last Name" maxlength="30"/>
       
       <label for="id_username" class="sr-only">Username</label>
-      <input id="id_username" type="text" class="form-control" name="username"placeholder="Username" maxlength="30"/>
+      <input id="id_username" type="text" class="form-control" name="username"placeholder="Username" maxlength="30" required/>
       
       <label for="id_password1" class="sr-only">Password</label>
-      <input type="password" class="form-control" name="password1" placeholder="Password" id="id_password1"/>
+      <input type="password" class="form-control" name="password1" placeholder="Password" id="id_password1" required/>
       
       <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+      
+      {% if form.errors %}
+          <div class="error">
+            {% if form.username.errors %}
+              {{ form.username.errors.as_text }}
+            {% endif %}
+            {% if form.password1.errors %}
+              {{ form.password1.errors.errors.as_text }}
+            {% endif %}
+          </div>
+      {% endif %}
     </form>
   </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
+    <h1 class="text-center">{{ user.first_name }}'s List</h1>
     <br/>
     <div class="formBox">        
         <form method="POST">{% csrf_token %}
@@ -21,18 +22,21 @@
     {% for activity in activities %}
         <div class="activityList">
             {% if not activity.done %}
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">{{ forloop.counter }}</div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">{{ counter }}</div>
+                </div>
+                <input type="text" class="form-control" value="{{ activity.title }}" disabled>
+                <div class="input-group-append">
+                  <input type="text" class="form-control" value="{{ activity.dateCreated | date:'M d, Y'  }} | {{ activity.dateCreated | timesince }}" disabled>
+                </div>
+                <div class="input-group-append">
+                  <a class="btn btn-default btn btn-outline-success" href="{% url 'update' pk=activity.id %}">Done</a>
+                </div>
+                <div class="input-group-append">
+                  <a class="btn btn-default btn btn-outline-danger" href="{% url 'delete' pk=activity.id %}">Delete</a>
+                </div>
               </div>
-              <input type="text" class="form-control" value="{{ activity.title }}" disabled>
-              <div class="input-group-append">
-                <a class="btn btn-default btn btn-outline-success" href="{% url 'update' pk=activity.id %}">Done</a>
-              </div>
-              <div class="input-group-append">
-                <a class="btn btn-default btn btn-outline-danger" href="{% url 'delete' pk=activity.id %}">Delete</a>
-              </div>
-            </div>
             {% endif %}
         </div>
     {% endfor %}
@@ -44,7 +48,7 @@
             {% if activity.done %}
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <div class="input-group-text">{{ forloop.counter }}</div>
+                <div class="input-group-text">{{ counter }}</div>
               </div>
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
               <div class="input-group-append">

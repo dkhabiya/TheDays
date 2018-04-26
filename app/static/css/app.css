@@ -40,6 +40,12 @@ input[id=checkBox]:checked~.strikethrough {
 
 .activityList {
   width: 100%;
-  max-width: 60%;
+  max-width: 100%;
   margin: auto;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  padding: 15px;
 }

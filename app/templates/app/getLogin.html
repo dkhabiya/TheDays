@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <div class="text-center">
+    <form method="post" action="{% url 'doLogin' %}" class="form-signin">
+      <h1>Log In</h1>
+      <hr/>
+      {% csrf_token %}
+      
+      <label for="id_username" class="sr-only">Username</label>
+      <input id="id_username" type="text" class="form-control" name="username" placeholder="Username" maxlength="30"/>
+      
+      <label for="id_password1" class="sr-only">Password</label>
+      <input type="password" class="form-control" name="password1" placeholder="Password" id="id_password1"/>
+      
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+      
+      {% if message %}
+          <div class="error">
+             {{ message }}
+          </div>
+      {% endif %}
+      
+    </form>
+  </div>
+{% endblock %}

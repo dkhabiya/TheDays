@@ -4,16 +4,19 @@ from django.shortcuts import get_object_or_404
 
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import (login as auth_login, authenticate)
 from django.contrib.auth.forms import UserCreationForm
 
 from .forms import ActivityForm, SignUpForm
 from .models import Activity
 
+import itertools
+import functools
+
 # Landing.
 def landing(request):
     return render(request, 'app/landing.html')
-
+    
 # Sign up.
 def signUp(request):
     if request.method == 'POST':
@@ -23,12 +26,35 @@ def signUp(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
-            login(request, user)
+            auth_login(request, user)
             return redirect('landing')
     else:
         form = SignUpForm()
     return render(request, 'app/signUp.html', {'form': form})
+    
+# Login page load.    
+def getLogin(request):
+    return render(request, 'app/getLogin.html')
 
+# Do login 
+def doLogin(request):
+    _message = ''
+    if request.method == 'POST':
+        _username = request.POST['username']
+        _password = request.POST['password1']
+        user = authenticate(username=_username, password=_password)
+        if user is not None:
+            if user.is_active:
+                auth_login(request, user)
+                return redirect('/user')
+            else:
+                _message = '* Your account is not activated.'
+        else:
+            _message = '* User does not exist.'
+    
+    context = {'message': _message}
+    return render(request, 'app/getLogin.html', context)
+    
 # Get activity list based on user login.
 @login_required    
 def activityList(request):
@@ -44,7 +70,7 @@ def activityList(request):
             activity.save()
             return redirect('activityList')
     
-    return render(request, 'app/index.html', {'activities': activities})
+    return render(request, 'app/index.html', {'activities': activities, 'counter': functools.partial(next, itertools.count(1))})
 
 # Update status of activity.
 @login_required
@@ -67,5 +93,3 @@ def delete(request, pk):
     activity.delete()
     
     return redirect('activityList')
-      
-  
