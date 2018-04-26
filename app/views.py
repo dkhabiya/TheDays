@@ -61,7 +61,6 @@ def activityList(request):
     activities = Activity.objects.filter(user=request.user).order_by('dateCreated')
     
     if request.method == "POST" and 'add' in request.POST:
-        print('Add')
         form = ActivityForm(request.POST)
         if form.is_valid():
             activity = form.save(commit=False)

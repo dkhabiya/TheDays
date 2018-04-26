@@ -5,7 +5,7 @@ from django.utils import timezone
 class Activity(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    dateCreated = models.DateTimeField(default=timezone.now)
+    dateCreated = models.DateField(default=timezone.now)
     done = models.BooleanField(default=False)
 
     def __str__(self):

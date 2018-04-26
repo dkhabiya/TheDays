@@ -1,4 +1,5 @@
 {% extends 'app/base.html' %}
+{% load customfilters %}
 
 {% block content %}
     <h1 class="text-center">{{ user.first_name }}'s List</h1>
@@ -8,7 +9,7 @@
             {{ form }}
             <div class="activityList">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" name="title">
+                  <input type="text" class="form-control" name="title" maxlength="90" data-toggle="tooltip" data-placement="bottom" title="Add an activity that you would like to do in 90 characters or less.">
                   <div class="input-group-append">
                     <button class="btn btn-outline-info" type="submit" name="add">Add</button>
                   </div>
@@ -28,7 +29,7 @@
                 </div>
                 <input type="text" class="form-control" value="{{ activity.title }}" disabled>
                 <div class="input-group-append">
-                  <input type="text" class="form-control" value="{{ activity.dateCreated | date:'M d, Y'  }} | {{ activity.dateCreated | timesince }}" disabled>
+                  <input type="text" class="form-control" value="{{ activity.dateCreated | date:'M d, Y'  }} | {{ activity.dateCreated | days }}" disabled>
                 </div>
                 <div class="input-group-append">
                   <a class="btn btn-default btn btn-outline-success" href="{% url 'update' pk=activity.id %}">Done</a>
@@ -51,6 +52,9 @@
                 <div class="input-group-text">{{ counter }}</div>
               </div>
               <input type="text" class="form-control" value="{{ activity.title }}" disabled>
+              <div class="input-group-append">
+                  <input type="text" class="form-control" value="{{ activity.dateCreated | date:'M d, Y'  }} | {{ activity.dateCreated | days  }}" disabled>
+                </div>
               <div class="input-group-append">
                 <a class="btn btn-default btn btn-outline-primary" href="{% url 'update' pk=activity.id %}">Undo</a>
               </div>

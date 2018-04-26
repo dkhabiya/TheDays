@@ -2,15 +2,6 @@ body {
     margin-top: 5%;
 }
 
-input[id=checkBox] {
-  display: none;
-}
-
-input[id=checkBox]:checked~.strikethrough {
-  text-decoration: line-through;
-  color: red;
-}
-
 .form-signin {
   width: 100%;
   max-width: 330px;
