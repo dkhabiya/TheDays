@@ -12,6 +12,6 @@ Once an activity is added it can be marked as completed and deleted. You can als
 ## Setup Details
 1. Setup a virtual environment for the project. 
 2. Install and download Django's latest version on your machine.
-3. git clone <repo link>
+3. git clone the repo link.
 4. python manage.py makemigrations && python manage.py migrate
 5. python manage.py runserver
