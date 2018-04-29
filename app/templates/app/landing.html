@@ -3,7 +3,11 @@
 {% block content %}
     <br/>
     <div class="text-center">
-        <h2>The Days</h2>
+        {% if user.is_authenticated %}
+            <h2> {{ user.first_name }} ! Welcome to The Days!</h2>
+        {% else %}
+            <h2>The Days</h2>
+        {% endif %}
         <br/>
         <div class="jumbotron">
             <strong>The Days</strong> is a to do list application. A simple task management application that allows you to keep track of your activities. <br/>
